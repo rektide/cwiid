@@ -53,6 +53,7 @@
 #define WIIMOTE_CLASS_0 0x04
 #define WIIMOTE_CLASS_1 0x25
 #define WIIMOTE_CLASS_2 0x00
+#define WIIMOTE_CLASS_3 0x508
 
 /* Wiimote port/channel/PSMs */
 #define CTL_PSM	17

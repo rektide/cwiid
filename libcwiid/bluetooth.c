@@ -71,7 +71,7 @@ int cwiid_get_bdinfo_array(int dev_id, unsigned int timeout, int max_bdinfo,
 		bdinfo_count = 0;
 		goto CODA;
 	}
-
+printf("OPENING CONN\n");
 	/* Open connection to Bluetooth Interface */
 	if ((sock = hci_open_dev(dev_id)) == -1) {
 		cwiid_err(NULL, "Bluetooth interface open error");
@@ -89,6 +89,7 @@ int cwiid_get_bdinfo_array(int dev_id, unsigned int timeout, int max_bdinfo,
 		goto CODA;
 	}
 
+printf("COPY  DEV LIST\n");
 	/* Copy dev_list to bdinfo */
 	for (bdinfo_count=i=0; (i < dev_count) && (bdinfo_count < max_bdinfo);
 	     i++) {
@@ -124,6 +125,7 @@ int cwiid_get_bdinfo_array(int dev_id, unsigned int timeout, int max_bdinfo,
 		bdinfo_count++;
 	}
 
+printf("GOT COUNT OF %d\n",bdinfo_count);
 	if (bdinfo_count == 0) {
 		free(*bdinfo);
 	}
@@ -136,6 +138,7 @@ int cwiid_get_bdinfo_array(int dev_id, unsigned int timeout, int max_bdinfo,
 		}
 	}
 
+	printf("%d devices",bdinfo_count);
 CODA:
 	if (dev_list) free(dev_list);
 	if (sock != -1) hci_close_dev(sock);
@@ -155,14 +158,14 @@ int cwiid_find_wiimote(bdaddr_t *bdaddr, int timeout)
 	int bdinfo_count;
 
 	if (timeout == -1) {
-		while ((bdinfo_count = cwiid_get_bdinfo_array(-1, 2, 1, &bdinfo, 0))
+		while ((bdinfo_count = cwiid_get_bdinfo_array(-1, 2, 1, &bdinfo, BT_NO_WIIMOTE_FILTER))
 		       == 0);
 		if (bdinfo_count == -1) {
 			return -1;
 		}
 	}
 	else {
-		bdinfo_count = cwiid_get_bdinfo_array(-1, timeout, 1, &bdinfo, 0);
+		bdinfo_count = cwiid_get_bdinfo_array(-1, timeout, 1, &bdinfo, BT_NO_WIIMOTE_FILTER);
 		if (bdinfo_count == -1) {
 			return -1;
 		}

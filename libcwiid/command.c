@@ -60,14 +60,14 @@ int cwiid_send_rpt(cwiid_wiimote_t *wiimote, uint8_t flags, uint8_t report,
 		return -1;
 	}
 
-	buf[0] = BT_TRANS_SET_REPORT | BT_PARAM_OUTPUT;
+	buf[0] = BT_TRANS_DATA | BT_PARAM_OUTPUT;
 	buf[1] = report;
 	memcpy(buf+2, data, len);
 	if (!(flags & CWIID_SEND_RPT_NO_RUMBLE)) {
 		buf[2] |= wiimote->state.rumble;
 	}
 
-	if (write(wiimote->ctl_socket, buf, len+2) != (ssize_t)(len+2)) {
+	if (write(wiimote->int_socket, buf, len+2) != (ssize_t)(len+2)) {
 		free(buf);
 		return -1;
 	}

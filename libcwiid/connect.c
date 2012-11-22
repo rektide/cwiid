@@ -85,6 +85,7 @@ cwiid_wiimote_t *cwiid_open_timeout(bdaddr_t *bdaddr, int flags, int timeout)
 		goto ERR_HND;
 	}
 
+printf("good!");
 	return wiimote;
 
 ERR_HND:
